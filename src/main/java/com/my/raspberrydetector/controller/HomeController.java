@@ -16,6 +16,7 @@ public class HomeController {
             Model model
     ){
         System.out.println(dht11Mapper.getAllInfo());
+        model.addAttribute("DHT",dht11Mapper.getAllInfo());
 //        model.addAttribute("");
         return "home";
     }
