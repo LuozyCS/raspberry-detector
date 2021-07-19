@@ -1,13 +1,13 @@
-package com.my.raspberrydetecor;
+package com.my.raspberrydetector;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RaspberryDetecorApplication {
+public class RaspberryDetectorApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(RaspberryDetecorApplication.class, args);
+        SpringApplication.run(RaspberryDetectorApplication.class, args);
     }
 
 }
