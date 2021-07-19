@@ -1,0 +1,67 @@
+#-*- coding:utf-8 -*-
+import Adafruit_DHT
+import pymysql
+import time
+
+def main():
+    # 生成 dht11 温湿度传感器收取对象
+    tre = Adafruit_DHT.DHT11
+    # 设置信号收取引脚 - GPIO 4
+    pin = 4
+    # 建立连接
+    con = pymysql.connect(
+            host = '121.37.188.45',
+            port = 3306,
+            user = 'root',
+            passwd = '123',
+            db = 'xyxlzy',
+            charset = 'utf8'
+            )
+    while True:
+        # 获取温度信息
+        data = get_temperature_data(tre, pin)
+        # 获取失败了的话输出提醒
+        if not data:
+            print('get data failed...')
+            time.sleep(60)
+            continue
+        # 将数据上传到数据库
+        update_data_to_mysql(con, data)
+        time.sleep(60)
+
+def get_temperature_data(tre, pin):
+    # 尝试获取三次
+    for i in range(3):
+        # 使用 read_retry(sensor, pin) 获取传感器收集到的数据
+        hum, tem = Adafruit_DHT.read_retry(tre, pin)
+        if hum is not None and tem is not None and tem > -271 and tem < 100:
+            # 如果传感器获取数据成功，生成一个获取到的时间，格式化成 “年-月-日 时:分:秒”
+            tim = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+            # print('温度获取成功')
+            # print('Temp = ' + str(tem) + '\nHumidity = ' + str(hum) + '\ntime is ' + tim + '\n--------------')
+            # 返回一个元组类型的数据，包含 温度 和 时间 ，都是字符串类型
+            return (str(tem), str(hum), tim)
+        # 前两次尝试获取失败延时 3 秒重新获取
+        if i < 2:
+            # print('温度获取wrong，正在尝试重新获取 . . .')
+            time.sleep(3)
+    # 三次获取失败直接返回一个空数据
+    # print('温度获取失败，请检查硬件是否异常')
+    return ()
+
+def update_data_to_mysql(con, data):
+    # 建立游标
+    cur = con.cursor()
+    # 执行 SQL 语句
+    sql  = "INSERT INTO DHT11 VALUES(%s,%s,%s,%s)"
+    # 执行 SQL 语句
+    cur.execute(sql, (data[0], data[1], 1, data[2]))
+    # 提交数据库更改操作
+    con.commit()
+    # 下面几行是测试查看数据库中数据是否成功添加
+    # cur.execute('SELECT *FROM wendu')
+    # inf = cur.fetchall()
+    # for i in inf:
+    #     print(i)
+
+main()
