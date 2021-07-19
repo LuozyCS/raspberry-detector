@@ -1,4 +1,4 @@
-package com.my.raspberrydetector.controller;
+package com.my.raspberrydetector.dataAccessObject;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

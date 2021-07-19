@@ -1,14 +1,14 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql:/121.37.188.45:3306/xyxlzy?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://121.37.188.45:3306/xyxlzy?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=GMT%2B8
     username: root
     password: 123
   main:
     allow-bean-definition-overriding: true
 
 mybatis:
-  type-aliases-package: judge.dataAccessObject
+  type-aliases-package: com.my.raspberrydetector.dataAccessObject
   mapper-locations: classpath:dataAccessObject/*Mapper.xml
 
 server:
