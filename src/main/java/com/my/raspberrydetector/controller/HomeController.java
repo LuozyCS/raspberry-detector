@@ -26,6 +26,8 @@ public class HomeController {
     ){
 //        System.out.println(dht11Mapper.getAllInfo());
 
+//        ArrayList<DHT11> DHT11List = (ArrayList<DHT11>) dht11Mapper.getAllInfo();
+//        model.addAttribute("DHT11",DHT11List);
         return "home";
     }
 
@@ -42,12 +44,12 @@ public class HomeController {
         return DHT11List_rec;
     }
 
-    @ResponseBody
     @RequestMapping("/home_request_table")
-    public ArrayList<DHT11> homeRequestTable(
+    public String homeRequestTable(
+            Model model
     ){
         ArrayList<DHT11> DHT11List = (ArrayList<DHT11>) dht11Mapper.getAllInfo();
-        return DHT11List;
-
+        model.addAttribute("DHT11",DHT11List);
+        return "home::replaceByAjax";
     }
 }
